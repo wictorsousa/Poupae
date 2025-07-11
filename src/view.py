@@ -6,14 +6,37 @@ import pandas as pd
 # Conectando com Banco de Dados
 conexao = lite.connect('dados.db')
 
-# Funções de Inserção ----------------------------------------------
 
-# Inserindo Categoria
-def inserir_categoria(i):
-
+# Cadastrar novo usuario no BD
+def cadastrar_novo_usuario(i):
     with conexao:
         cur = conexao.cursor()
-        query = "INSERT INTO Categoria (nome) VALUES (?)"
+        query = "INSERT INTO Usuarios (Username, Email, Senha, Confirma_Senha) VALUES (?, ?, ?, ?)"
+        cur.execute(query, i)
+
+# Verificar login no BD
+def verificar_login(i):
+    with conexao:
+        cur = conexao.cursor()
+        query = "SELECT * FROM Usuarios WHERE Username = ? AND Senha = ?"
+        cur.execute(query, i)
+        return cur.fetchone()
+
+
+# Funções de Inserção ----------------------------------------------
+
+# Inserindo Categoria de Receita
+def inserir_categoria_receita(i):
+    with conexao:
+        cur = conexao.cursor()
+        query = "INSERT INTO Categoria_Receita (nome) VALUES (?)"
+        cur.execute(query, i)
+
+# Inserindo Categoria de Gasto
+def inserir_categoria_gasto(i):
+    with conexao:
+        cur = conexao.cursor()
+        query = "INSERT INTO Categoria_Gasto (nome) VALUES (?)"
         cur.execute(query, i)
 
 
@@ -52,17 +75,26 @@ def deletar_gastos(i):
 
 # Funções para ver dados -------------------------------------------
 
-# Ver Categorias
-def ver_categorias():
+# Ver Categorias de Receita
+def ver_categorias_receitas():
     lista_itens = []
-
     with conexao:
         cur = conexao.cursor()
-        cur.execute("SELECT * FROM Categoria")
+        cur.execute("SELECT * FROM Categoria_Receita")
         linha = cur.fetchall()
         for l in linha:
             lista_itens.append(l)
+    return lista_itens
 
+# Ver Categorias de Gasto
+def ver_categorias_gastos():
+    lista_itens = []
+    with conexao:
+        cur = conexao.cursor()
+        cur.execute("SELECT * FROM Categoria_Gasto")
+        linha = cur.fetchall()
+        for l in linha:
+            lista_itens.append(l)
     return lista_itens
 
 # Ver Receitas
@@ -100,10 +132,12 @@ def tabela():
     tabela_lista = []
 
     for i in gastos:
-        tabela_lista.append(i)
+        # Adicionando a etiqueta "Gasto"
+        tabela_lista.append([i[0], 'Gasto', i[1], i[2], i[3]])
 
     for i in receitas:
-        tabela_lista.append(i)
+        # Adicionando a etiqueta "Receita"
+        tabela_lista.append([i[0], 'Receita', i[1], i[2], i[3]])
 
     return tabela_lista
 
@@ -135,7 +169,28 @@ def bar_valores():
 
     return [receita_total, gasto_total, saldo_total]
 
-# função grafico pie
+
+# função grafico pie receitas
+def pie_valores_receitas():
+    receitas = ver_receitas()
+    tabela_lista = []
+
+    for i in receitas:
+        tabela_lista.append(i)
+    
+    dataframe = pd.DataFrame(tabela_lista, columns = ['id', 'categoria', 'Data', 'valor'])
+    dataframe = dataframe.groupby('categoria')['valor'].sum()
+
+    lista_quantias = dataframe.values.tolist()
+    lista_categorias = []
+
+    for i in dataframe.index:
+        lista_categorias.append(i)
+
+    return ([lista_categorias, lista_quantias])
+
+
+# função grafico pie despesas
 def pie_valores():
     gastos = ver_gastos()
     tabela_lista = []
