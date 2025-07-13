@@ -29,14 +29,14 @@ def verificar_login(i):
 def inserir_categoria_receita(i):
     with conexao:
         cur = conexao.cursor()
-        query = "INSERT INTO Categoria_Receita (nome) VALUES (?)"
+        query = "INSERT INTO Categoria_Receita (nome, user_id) VALUES (?, ?)"
         cur.execute(query, i)
 
 # Inserindo Categoria de Gasto
 def inserir_categoria_gasto(i):
     with conexao:
         cur = conexao.cursor()
-        query = "INSERT INTO Categoria_Gasto (nome) VALUES (?)"
+        query = "INSERT INTO Categoria_Gasto (nome, user_id) VALUES (?, ?)"
         cur.execute(query, i)
 
 
@@ -45,7 +45,7 @@ def inserir_receita(i):
 
     with conexao:
         cur = conexao.cursor()
-        query = "INSERT INTO Receitas (categoria, adicionado_em, valor) VALUES (?, ?, ?)"
+        query = "INSERT INTO Receitas (categoria, adicionado_em, valor, user_id) VALUES (?, ?, ?, ?)"
         cur.execute(query, i)
 
 
@@ -54,7 +54,7 @@ def inserir_gastos(i):
 
     with conexao:
         cur = conexao.cursor()
-        query = "INSERT INTO Gastos (categoria, retirado_em, valor) VALUES (?, ?, ?)"
+        query = "INSERT INTO Gastos (categoria, retirado_em, valor, user_id) VALUES (?, ?, ?, ?)"
         cur.execute(query, i)
 
 # Funções para Deletar ---------------------------------------------
@@ -63,47 +63,50 @@ def inserir_gastos(i):
 def deletar_receitas(i):
     with conexao:
         cur = conexao.cursor()
-        query = "DELETE FROM Receitas WHERE id=?"
+        query = "DELETE FROM Receitas WHERE id=? AND user_id=?"
         cur.execute(query, i)
 
 # Deletar Gastos
 def deletar_gastos(i):
     with conexao:
         cur = conexao.cursor()
-        query = "DELETE FROM Gastos WHERE id=?"
+        query = "DELETE FROM Gastos WHERE id=? AND user_id=?"
         cur.execute(query, i)
 
 # Funções para ver dados -------------------------------------------
 
 # Ver Categorias de Receita
-def ver_categorias_receitas():
+def ver_categorias_receitas(user_id):
     lista_itens = []
     with conexao:
         cur = conexao.cursor()
-        cur.execute("SELECT * FROM Categoria_Receita")
+        query = "SELECT * FROM Categoria_Receita WHERE user_id = ?"
+        cur.execute(query, (user_id,))
         linha = cur.fetchall()
         for l in linha:
             lista_itens.append(l)
     return lista_itens
 
 # Ver Categorias de Gasto
-def ver_categorias_gastos():
+def ver_categorias_gastos(user_id):
     lista_itens = []
     with conexao:
         cur = conexao.cursor()
-        cur.execute("SELECT * FROM Categoria_Gasto")
+        query = "SELECT * FROM Categoria_Gasto WHERE user_id = ?"
+        cur.execute(query, (user_id,))
         linha = cur.fetchall()
         for l in linha:
             lista_itens.append(l)
     return lista_itens
 
 # Ver Receitas
-def ver_receitas():
+def ver_receitas(user_id):
     lista_itens = []
 
     with conexao:
         cur = conexao.cursor()
-        cur.execute("SELECT * FROM Receitas")
+        query = ("SELECT * FROM Receitas WHERE user_id = ?")
+        cur.execute(query, (user_id,))
         linha = cur.fetchall()
         for l in linha:
             lista_itens.append(l)
@@ -111,12 +114,13 @@ def ver_receitas():
     return lista_itens
 
 # Ver Gastos
-def ver_gastos():
+def ver_gastos(user_id):
     lista_itens = []
 
     with conexao:
         cur = conexao.cursor()
-        cur.execute("SELECT * FROM Gastos")
+        query = ("SELECT * FROM Gastos WHERE user_id = ?")
+        cur.execute(query, (user_id,))
         linha = cur.fetchall()
         for l in linha:
             lista_itens.append(l)
@@ -125,9 +129,9 @@ def ver_gastos():
 
 
 # função para dados da tabela
-def tabela():
-    gastos = ver_gastos()
-    receitas = ver_receitas()
+def tabela(user_id):
+    gastos = ver_gastos(user_id)
+    receitas = ver_receitas(user_id)
 
     tabela_lista = []
 
@@ -145,9 +149,9 @@ def tabela():
 
 
 # função para dados do grafico de barra
-def bar_valores():
+def bar_valores(user_id):
     #receita total ----------------
-    receitas = ver_receitas()
+    receitas = ver_receitas(user_id)
     receitas_lista = []
 
     for i in receitas:
@@ -156,7 +160,7 @@ def bar_valores():
     receita_total = sum(receitas_lista)
 
     # despesa total -------------------
-    gastos = ver_gastos()
+    gastos = ver_gastos(user_id)
     gastos_lista = []
 
     for i in gastos:
@@ -171,14 +175,14 @@ def bar_valores():
 
 
 # função grafico pie receitas
-def pie_valores_receitas():
-    receitas = ver_receitas()
+def pie_valores_receitas(user_id):
+    receitas = ver_receitas(user_id)
     tabela_lista = []
 
     for i in receitas:
         tabela_lista.append(i)
     
-    dataframe = pd.DataFrame(tabela_lista, columns = ['id', 'categoria', 'Data', 'valor'])
+    dataframe = pd.DataFrame(tabela_lista, columns = ['id', 'categoria', 'Data', 'valor', 'user_id'])
     dataframe = dataframe.groupby('categoria')['valor'].sum()
 
     lista_quantias = dataframe.values.tolist()
@@ -191,14 +195,14 @@ def pie_valores_receitas():
 
 
 # função grafico pie despesas
-def pie_valores():
-    gastos = ver_gastos()
+def pie_valores(user_id):
+    gastos = ver_gastos(user_id)
     tabela_lista = []
 
     for i in gastos:
         tabela_lista.append(i)
     
-    dataframe = pd.DataFrame(tabela_lista, columns = ['id', 'categoria', 'Data', 'valor'])
+    dataframe = pd.DataFrame(tabela_lista, columns = ['id', 'categoria', 'Data', 'valor', 'user_id'])
     dataframe = dataframe.groupby('categoria')['valor'].sum()
 
     lista_quantias = dataframe.values.tolist()
@@ -211,9 +215,9 @@ def pie_valores():
 
 
 # função porcentagem
-def porcentagem_valor():
+def porcentagem_valor(user_id):
     #receita total ----------------
-    receitas = ver_receitas()
+    receitas = ver_receitas(user_id)
     receitas_lista = []
 
     for i in receitas:
@@ -222,7 +226,7 @@ def porcentagem_valor():
     receita_total = sum(receitas_lista)
 
     # despesa total -------------------
-    gastos = ver_gastos()
+    gastos = ver_gastos(user_id)
     gastos_lista = []
 
     for i in gastos:

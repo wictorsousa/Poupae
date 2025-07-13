@@ -20,21 +20,25 @@ with conexao:
 # Criando tabela de categorias para Receitas
 with conexao:
     cur = conexao.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS Categoria_Receita(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT)")
+    # Adicionada a coluna user_id
+    cur.execute("CREATE TABLE IF NOT EXISTS Categoria_Receita(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, user_id INTEGER)")
 
 
 # Criando tabela de categorias para Gastos
 with conexao:
     cur = conexao.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS Categoria_Gasto(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT)")
+    # Adicionada a coluna user_id
+    cur.execute("CREATE TABLE IF NOT EXISTS Categoria_Gasto(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, user_id INTEGER)")
 
 # Criando tabela de receitas
 with conexao:
     cur = conexao.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS Receitas(id INTEGER PRIMARY KEY AUTOINCREMENT, categoria TEXT, adicionado_em DATE, valor REAL)")
+    # Adicionada a coluna user_id
+    cur.execute("CREATE TABLE IF NOT EXISTS Receitas(id INTEGER PRIMARY KEY AUTOINCREMENT, categoria TEXT, adicionado_em DATE, valor REAL, user_id INTEGER)")
 
 
 # Criando tabela de gastos
 with conexao:
     cur = conexao.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS Gastos(id INTEGER PRIMARY KEY AUTOINCREMENT, categoria TEXT, retirado_em DATE, valor REAL)")
+    # Adicionada a coluna user_id
+    cur.execute("CREATE TABLE IF NOT EXISTS Gastos(id INTEGER PRIMARY KEY AUTOINCREMENT, categoria TEXT, retirado_em DATE, valor REAL, user_id INTEGER)")

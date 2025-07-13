@@ -55,12 +55,15 @@ class App(ctk.CTk):
         dados_usuario = verificar_login((self.username_login, self.senha_login))
         
         if dados_usuario:
+            
+            user_id = dados_usuario[0]
+            
             # --- A MÁGICA ACONTECE AQUI ---
             # 1. Fecha a janela de login
             self.destroy()
             
             # 2. Cria e exibe a nova janela do dashboard
-            dashboard = Dashboard()
+            dashboard = Dashboard(user_id=user_id)
             dashboard.mainloop()
         else:
             # Se a função retornou 'None', o usuário ou senha estão incorretos
