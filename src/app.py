@@ -31,12 +31,19 @@ class App(ctk.CTk):
                 messagebox.showerror(title="Sistema de login", message="ERRO!!!\nPor favor, preencha todos os campos")
             elif(len(self.username_cadastro) < 4):
                 messagebox.showwarning(title="Sistema de Login", message="O nome de usuário deve ser de pelo menos 4 caracteres.")
+            
+            elif(len(self.username_cadastro) > 25):
+                messagebox.showwarning(title="Sistema de Login", message="O nome de usuário não pode ter mais de 25 caracteres.")
+
             elif(len(self.senha_cadastro) < 4):
                 messagebox.showwarning(title="Sistema de Login", message="A sua senha deve conter pelo menos 4 caracteres.")
+            
+            elif(len(self.senha_cadastro) > 25):
+                messagebox.showwarning(title="Sistema de Login", message="A senha não pode ter mais de 25 caracteres.")
+
             elif(self.senha_cadastro != self.confirma_senha_cadastro):
                 messagebox.showerror(title="Sistema de Login", message="ERRO!!!\nAs senhas colocadas não são iguais, coloque senhas iguais.")
             else:
-                # AQUI ESTÁ A MUDANÇA: Chamando a função do view.py
                 cadastrar_novo_usuario((self.username_cadastro, self.email_cadastro, self.senha_cadastro, self.confirma_senha_cadastro))
                     
                 messagebox.showinfo(title="Sistema de Login", message=f"Parabéns {self.username_cadastro}\nOs seus dados foram cadastrados com sucesso")     
@@ -58,7 +65,6 @@ class App(ctk.CTk):
             
             user_id = dados_usuario[0]
             
-            # --- A MÁGICA ACONTECE AQUI ---
             # 1. Fecha a janela de login
             self.destroy()
             
@@ -90,7 +96,7 @@ class App(ctk.CTk):
         self.lb_img = ctk.CTkLabel(self, text=None, image=self.img)
         self.lb_img.grid(row=1, column=0, padx=10)
         
-        #Titulo da nossa plataforma
+        #Titulo da plataforma
         self.title = ctk.CTkLabel(self, text="Faça seu login ou cadastre-se\n na nossa plataforma pra acessar \nos nossos serviços",  font=('Century Gothic ', 18, 'bold'))
         self.title.grid(row=0, column=0, pady=10, padx=10)
         

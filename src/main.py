@@ -27,7 +27,7 @@ class Dashboard(customtkinter.CTk):
         super().__init__()
         self.user_id = user_id
 
-        # --- CORES E FONTES ---
+        # Cores e fontes
         self.COR_FUNDO = "#F0F2F5"
         self.COR_BRANCA = "#FFFFFF"
         self.COR_TEXTO_CINZA = "#333333"
@@ -49,7 +49,7 @@ class Dashboard(customtkinter.CTk):
         self.FONT_TITULO_SECAO = ('Arial', 13, 'bold')
         self.FONT_LABEL = ('Arial', 12)
 
-        # --- CONFIGURAÇÃO DA JANELA PRINCIPAL ---
+        # Config da janela principal
         self.title("Poupaê - Dashboard")
         self.geometry('1280x750')
         self.configure(fg_color=self.COR_FUNDO)
@@ -58,7 +58,7 @@ class Dashboard(customtkinter.CTk):
         self.grid_rowconfigure(1, weight=1, uniform="row_group")
         self.grid_rowconfigure(2, weight=1, uniform="row_group")
 
-        # --- ESTILO APENAS PARA O TREEVIEW (TTK) ---
+        # estilo apenas para o ttk
         style = ttk.Style(self)
         style.theme_use("clam")
         style.configure("Treeview", background=self.COR_BRANCA, foreground=self.COR_TEXTO_CINZA, rowheight=30, fieldbackground=self.COR_BRANCA, borderwidth=0, relief='flat')
@@ -66,17 +66,17 @@ class Dashboard(customtkinter.CTk):
         style.configure("Treeview.Heading", background=self.AZUL, foreground=self.COR_BRANCA, font=('Arial', 11, 'bold'), relief='flat')
         style.map("Treeview.Heading", background=[('active', self.AZUL)])
 
-        # --- CARREGANDO ÍCONES PARA OS CARDS ---
+        # ícones dos cards
         self.img_renda = customtkinter.CTkImage(light_image=Image.open(resource_path('rendaIcon.png')), size=(40,40))
         self.img_despesa = customtkinter.CTkImage(light_image=Image.open(resource_path('despesasIcon.png')), size=(40,40))
         self.img_saldo = customtkinter.CTkImage(light_image=Image.open(resource_path('walletIcon.png')), size=(40,40))
 
-        # --- CHAMADA PARA CONSTRUIR A INTERFACE ---
+        # Chamada para construir a interface
         self.setup_ui()
         self.atualizar_tudo()
 
     def setup_ui(self):
-        # --- FRAMES PRINCIPAIS ---
+        # Frames princiapis
         self.frameCima = customtkinter.CTkFrame(self, height=60, fg_color=self.COR_BRANCA, corner_radius=10)
         self.frameCima.grid(row=0, column=0, sticky="nsew")
         self.frameMeio = customtkinter.CTkFrame(self, fg_color=self.COR_FUNDO, corner_radius=0)
@@ -84,14 +84,14 @@ class Dashboard(customtkinter.CTk):
         self.frameBaixo = customtkinter.CTkFrame(self, fg_color=self.COR_FUNDO, corner_radius=0)
         self.frameBaixo.grid(row=2, column=0, sticky="nsew", padx=10, pady=(0, 10))
 
-        # --- TÍTULO NO FRAME CIMA ---
+        # Título no Frame Cima
         self.frameCima.grid_columnconfigure(0, weight=1)
         self.frameCima.grid_rowconfigure(0, weight=1)
         app_img = customtkinter.CTkImage(light_image=Image.open(resource_path('logo.png')), size=(45, 45))
         app_logo = customtkinter.CTkLabel(self.frameCima, image=app_img, text=" Poupaê", compound="left", padx=20, anchor="w", font=self.FONT_TITULO_APP, fg_color="transparent", text_color=self.AZUL)
         app_logo.grid(row=0, column=0, sticky="nsew")
         
-        # --- ESTRUTURA DE LAYOUT DO FRAME MEIO ---
+        # Estrutura de layout do Frame Meio
         for i in range(3): self.frameMeio.grid_columnconfigure(i, weight=1, uniform="group1")
         self.frameMeio.grid_rowconfigure(1, weight=1)
 
@@ -108,7 +108,7 @@ class Dashboard(customtkinter.CTk):
         self.card_grafico_2 = customtkinter.CTkFrame(self.frameMeio, fg_color=self.COR_BRANCA, border_width=2, border_color=self.COR_TEXTO_CINZA, corner_radius=10)
         self.card_grafico_2.grid(row=1, column=2, sticky="nsew", padx=(5, 0))
 
-        # --- ESTRUTURA DE 3 COLUNAS PARA O FRAME BAIXO ---
+        # Estrutura de 3 colunas para o Frame Meio
         self.frameBaixo.grid_columnconfigure(0, weight=2)
         self.frameBaixo.grid_columnconfigure(1, weight=1)
         self.frameBaixo.grid_columnconfigure(2, weight=1)
@@ -120,56 +120,55 @@ class Dashboard(customtkinter.CTk):
         self.frame_configuracao_card = customtkinter.CTkFrame(self.frameBaixo, fg_color=self.COR_BRANCA, border_width=2, border_color=self.COR_TEXTO_CINZA, corner_radius=10)
         self.frame_configuracao_card.grid(row=0, column=2, sticky="nsew", padx=(5, 0), pady=10)
         
-        # --- POPULAÇÃO DOS WIDGETS DOS FORMULÁRIOS ---
         # Painel de Despesas
         l_info_despesa = customtkinter.CTkLabel(self.frame_operacoes_card, text='Adicionar nova despesa', anchor="nw", font=self.FONT_TITULO_SECAO, text_color=self.COR_TEXTO_CINZA)
         l_info_despesa.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 5), sticky="w")
+        l_nova_cat_despesa = customtkinter.CTkLabel(self.frame_operacoes_card, text='Nova Categoria', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
+        l_nova_cat_despesa.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        self.e_nova_categoria_gasto = customtkinter.CTkEntry(self.frame_operacoes_card, width=140, justify='left', corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
+        self.e_nova_categoria_gasto.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+        botao_add_cat_gasto = customtkinter.CTkButton(self.frame_operacoes_card, text="SALVAR", command=self.adicionar_categoria_gasto_b, fg_color=self.AZUL, hover_color=self.VERDE_CLARO, corner_radius=8)
+        botao_add_cat_gasto.grid(row=2, column=1, padx=10, pady=5, sticky="e")
         l_categoria_despesa = customtkinter.CTkLabel(self.frame_operacoes_card, text='Categoria', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_categoria_despesa.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        l_categoria_despesa.grid(row=3, column=0, padx=10, pady=5, sticky="w")
         self.combo_categoria_despesas = customtkinter.CTkComboBox(self.frame_operacoes_card, values=[i[1] for i in ver_categorias_gastos(self.user_id)], font=self.FONT_LABEL, width=140, corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
-        self.combo_categoria_despesas.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+        self.combo_categoria_despesas.grid(row=3, column=1, padx=10, pady=5, sticky="w")
         self.combo_categoria_despesas.set("")
         l_data_despesa = customtkinter.CTkLabel(self.frame_operacoes_card, text='Data', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_data_despesa.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+        l_data_despesa.grid(row=4, column=0, padx=10, pady=5, sticky="w")
         self.e_cal_despesas = DateEntry(self.frame_operacoes_card, width=12, background=self.AZUL, foreground=self.COR_BRANCA, borderwidth=2, date_pattern='dd/mm/yyyy')
-        self.e_cal_despesas.grid(row=2, column=1, padx=10, pady=5, sticky="w")
+        self.e_cal_despesas.grid(row=4, column=1, padx=10, pady=5, sticky="w")
         l_valor_despesa = customtkinter.CTkLabel(self.frame_operacoes_card, text='Quantia Total', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_valor_despesa.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+        l_valor_despesa.grid(row=5, column=0, padx=10, pady=5, sticky="w")
         self.e_valor_despesas = customtkinter.CTkEntry(self.frame_operacoes_card, width=140, justify='left', corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
-        self.e_valor_despesas.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+        self.e_valor_despesas.grid(row=5, column=1, padx=10, pady=5, sticky="w")
         botao_inserir_despesas = customtkinter.CTkButton(self.frame_operacoes_card, text="ADICIONAR", command=self.inserir_despesas_b, fg_color=self.AZUL, hover_color=self.VERDE_CLARO, corner_radius=8)
-        botao_inserir_despesas.grid(row=4, column=1, padx=10, pady=10, sticky="e")
-        l_nova_cat_despesa = customtkinter.CTkLabel(self.frame_operacoes_card, text='Nova Categoria', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_nova_cat_despesa.grid(row=5, column=0, padx=10, pady=5, sticky="w")
-        self.e_nova_categoria_gasto = customtkinter.CTkEntry(self.frame_operacoes_card, width=140, justify='left', corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
-        self.e_nova_categoria_gasto.grid(row=5, column=1, padx=10, pady=5, sticky="w")
-        botao_add_cat_gasto = customtkinter.CTkButton(self.frame_operacoes_card, text="SALVAR", command=self.adicionar_categoria_gasto_b, fg_color=self.AZUL, hover_color=self.VERDE_CLARO, corner_radius=8)
-        botao_add_cat_gasto.grid(row=6, column=1, padx=10, pady=5, sticky="e")
+        botao_inserir_despesas.grid(row=6, column=1, padx=10, pady=10, sticky="e")
 
         # Painel de Receitas
         l_info_receita = customtkinter.CTkLabel(self.frame_configuracao_card, text='Adicionar nova receita', anchor="nw", font=self.FONT_TITULO_SECAO, text_color=self.COR_TEXTO_CINZA)
         l_info_receita.grid(row=0, column=0, columnspan=2, padx=10, pady=(10, 5), sticky="w")
+        l_nova_cat_receita = customtkinter.CTkLabel(self.frame_configuracao_card, text='Nova Categoria', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
+        l_nova_cat_receita.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        self.e_nova_categoria_receita = customtkinter.CTkEntry(self.frame_configuracao_card, width=140, justify='left', corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
+        self.e_nova_categoria_receita.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+        botao_add_cat_receita = customtkinter.CTkButton(self.frame_configuracao_card, text="SALVAR", command=self.adicionar_categoria_receita_b, fg_color=self.AZUL, hover_color=self.VERDE_CLARO, corner_radius=8)
+        botao_add_cat_receita.grid(row=2, column=1, padx=10, pady=5, sticky="e")
         l_categoria_receita = customtkinter.CTkLabel(self.frame_configuracao_card, text='Categoria', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_categoria_receita.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        l_categoria_receita.grid(row=3, column=0, padx=10, pady=5, sticky="w")
         self.combo_categoria_receitas = customtkinter.CTkComboBox(self.frame_configuracao_card, values=[i[1] for i in ver_categorias_receitas(self.user_id)], font=self.FONT_LABEL, width=140, corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
-        self.combo_categoria_receitas.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+        self.combo_categoria_receitas.grid(row=3, column=1, padx=10, pady=5, sticky="w")
         self.combo_categoria_receitas.set("")
         l_data_receita = customtkinter.CTkLabel(self.frame_configuracao_card, text='Data', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_data_receita.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+        l_data_receita.grid(row=4, column=0, padx=10, pady=5, sticky="w")
         self.e_cal_receitas = DateEntry(self.frame_configuracao_card, width=12, background=self.AZUL, foreground=self.COR_BRANCA, borderwidth=2, date_pattern='dd/mm/yyyy')
-        self.e_cal_receitas.grid(row=2, column=1, padx=10, pady=5, sticky="w")
+        self.e_cal_receitas.grid(row=4, column=1, padx=10, pady=5, sticky="w")
         l_valor_receita = customtkinter.CTkLabel(self.frame_configuracao_card, text='Quantia Total', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_valor_receita.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+        l_valor_receita.grid(row=5, column=0, padx=10, pady=5, sticky="w")
         self.e_valor_receitas = customtkinter.CTkEntry(self.frame_configuracao_card, width=140, justify='left', corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
-        self.e_valor_receitas.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+        self.e_valor_receitas.grid(row=5, column=1, padx=10, pady=5, sticky="w")
         botao_inserir_receitas = customtkinter.CTkButton(self.frame_configuracao_card, text="ADICIONAR", command=self.inserir_receitas_b, fg_color=self.AZUL, hover_color=self.VERDE_CLARO, corner_radius=8)
-        botao_inserir_receitas.grid(row=4, column=1, padx=10, pady=10, sticky="e")
-        l_nova_cat_receita = customtkinter.CTkLabel(self.frame_configuracao_card, text='Nova Categoria', anchor="w", font=self.FONT_LABEL, text_color=self.COR_TEXTO_CINZA)
-        l_nova_cat_receita.grid(row=5, column=0, padx=10, pady=5, sticky="w")
-        self.e_nova_categoria_receita = customtkinter.CTkEntry(self.frame_configuracao_card, width=140, justify='left', corner_radius=8, fg_color=self.COR_BRANCA, text_color=self.COR_TEXTO_CINZA)
-        self.e_nova_categoria_receita.grid(row=5, column=1, padx=10, pady=5, sticky="w")
-        botao_add_cat_receita = customtkinter.CTkButton(self.frame_configuracao_card, text="SALVAR", command=self.adicionar_categoria_receita_b, fg_color=self.AZUL, hover_color=self.VERDE_CLARO, corner_radius=8)
-        botao_add_cat_receita.grid(row=6, column=1, padx=10, pady=5, sticky="e")
+        botao_inserir_receitas.grid(row=6, column=1, padx=10, pady=10, sticky="e")
 
     def atualizar_tudo(self):
         self.resumo()
@@ -335,12 +334,12 @@ class Dashboard(customtkinter.CTk):
         nome = self.combo_categoria_receitas.get()
         data = self.e_cal_receitas.get()
 
-        # --- VALIDAÇÃO DA CATEGORIA ---
+        # Validação da Categoria
         categorias_validas = [i[1] for i in ver_categorias_receitas(self.user_id)]
         if nome not in categorias_validas and nome != "":
             messagebox.showerror('Erro de Categoria', f'A categoria "{nome}" não é válida.\n\nPor favor, selecione uma da lista ou crie uma nova na seção "Nova Categoria".')
             return
-        # --- FIM DA VALIDAÇÃO ---
+        # Fim da validação
 
         try:
             quantia = float(self.e_valor_receitas.get().replace(",", "."))
@@ -359,7 +358,7 @@ class Dashboard(customtkinter.CTk):
         nome = self.combo_categoria_despesas.get()
         data = self.e_cal_despesas.get()
 
-        # --- VALIDAÇÃO DA CATEGORIA ---
+        # Validação da Categoria
         # 1. Pega a lista de nomes de categorias válidas do banco
         categorias_validas = [i[1] for i in ver_categorias_gastos(self.user_id)]
         
@@ -367,7 +366,7 @@ class Dashboard(customtkinter.CTk):
         if nome not in categorias_validas and nome != "":
             messagebox.showerror('Erro de Categoria', f'A categoria "{nome}" não é válida.\n\nPor favor, selecione uma da lista ou crie uma nova na seção "Nova Categoria".')
             return
-        # --- FIM DA VALIDAÇÃO ---
+        # Fim da validação
 
         try:
             quantia = float(self.e_valor_despesas.get().replace(",", "."))

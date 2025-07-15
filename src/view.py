@@ -57,7 +57,7 @@ def inserir_gastos(i):
         query = "INSERT INTO Gastos (categoria, retirado_em, valor, user_id) VALUES (?, ?, ?, ?)"
         cur.execute(query, i)
 
-# Funções para Deletar ---------------------------------------------
+# Funções para Deletar -----------------------------------------
 
 # Deletar Receitas
 def deletar_receitas(i):
@@ -73,7 +73,7 @@ def deletar_gastos(i):
         query = "DELETE FROM Gastos WHERE id=? AND user_id=?"
         cur.execute(query, i)
 
-# Funções para ver dados -------------------------------------------
+# Funções para ver dados ------------------------------------------
 
 # Ver Categorias de Receita
 def ver_categorias_receitas(user_id):
