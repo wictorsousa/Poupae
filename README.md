@@ -2,7 +2,7 @@
 Bem-vindo ao repositório do projeto Poupaê - Gerenciador de Finanças Pessoais
 
 ## Sobre o projeto
-
+Poupaê é um aplicativo de desktop para gerenciamento financeiro pessoal, projetado para ajudar os usuários a terem uma visão clara e organizada de suas receitas e despesas. Com uma interface intuitiva e visual, o controle das finanças se torna uma tarefa simples e eficiente.
 
 
 ## Acesse o Protótipo no Figma
