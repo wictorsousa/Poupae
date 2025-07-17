@@ -35,7 +35,7 @@ with conexao:
         CREATE TABLE IF NOT EXISTS Usuarios(
             Id INTEGER PRIMARY KEY AUTOINCREMENT, 
             Username TEXT NOT NULL,
-            Email TEXT NOT NULL,
+            Email TEXT NOT NULL UNIQUE,
             Senha TEXT NOT NULL, 
             Confirma_Senha TEXT NOT NULL              
         ); 
