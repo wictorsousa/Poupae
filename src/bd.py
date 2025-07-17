@@ -1,8 +1,32 @@
-# Importação do SQLite
+# Importação do SQLite e outras bibliotecas necessárias
 import sqlite3 as lite
+import os
+import sys
 
-# Conectando com Banco de Dados
-conexao = lite.connect('dados.db')
+# --- Lógica para criar o caminho dinâmico do banco de dados ---
+
+# Determina o caminho base, funcionando tanto no script .py quanto no .exe
+if getattr(sys, 'frozen', False):
+    # Se estiver rodando como um executável (.exe)
+    base_path = os.path.dirname(sys.executable)
+else:
+    # Se estiver rodando como um script normal (.py)
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
+# Define o caminho para a pasta 'data'
+data_dir = os.path.join(base_path, 'data')
+
+# Cria a pasta 'data' se ela não existir
+os.makedirs(data_dir, exist_ok=True)
+
+# Define o caminho completo para o arquivo do banco de dados
+db_path = os.path.join(data_dir, 'dados.db')
+
+# --- Fim da lógica do caminho ---
+
+
+# Conectando com o Banco de Dados usando o caminho dinâmico
+conexao = lite.connect(db_path)
 
 # Criando tabela de Usuarios
 with conexao:

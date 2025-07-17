@@ -1,23 +1,23 @@
 # Importando SQLite
 import sqlite3 as lite
-import bd
+import bd  # Mantém a importação do bd.py
 import pandas as pd
 
-# Conectando com Banco de Dados
-conexao = lite.connect('dados.db')
-
+# A linha "conexao = lite.connect('dados.db')" foi REMOVIDA daqui.
 
 # Cadastrar novo usuario no BD
 def cadastrar_novo_usuario(i):
-    with conexao:
-        cur = conexao.cursor()
+    # Usa a conexão de bd.py -> bd.conexao
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "INSERT INTO Usuarios (Username, Email, Senha, Confirma_Senha) VALUES (?, ?, ?, ?)"
         cur.execute(query, i)
 
 # Verificar login no BD
 def verificar_login(i):
-    with conexao:
-        cur = conexao.cursor()
+    # Usa a conexão de bd.py -> bd.conexao
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "SELECT * FROM Usuarios WHERE Username = ? AND Senha = ?"
         cur.execute(query, i)
         return cur.fetchone()
@@ -27,33 +27,31 @@ def verificar_login(i):
 
 # Inserindo Categoria de Receita
 def inserir_categoria_receita(i):
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "INSERT INTO Categoria_Receita (nome, user_id) VALUES (?, ?)"
         cur.execute(query, i)
 
 # Inserindo Categoria de Gasto
 def inserir_categoria_gasto(i):
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "INSERT INTO Categoria_Gasto (nome, user_id) VALUES (?, ?)"
         cur.execute(query, i)
 
 
 # Inserindo Receitas
 def inserir_receita(i):
-
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "INSERT INTO Receitas (categoria, adicionado_em, valor, user_id) VALUES (?, ?, ?, ?)"
         cur.execute(query, i)
 
 
 # Inserindo Gastos
 def inserir_gastos(i):
-
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "INSERT INTO Gastos (categoria, retirado_em, valor, user_id) VALUES (?, ?, ?, ?)"
         cur.execute(query, i)
 
@@ -61,15 +59,15 @@ def inserir_gastos(i):
 
 # Deletar Receitas
 def deletar_receitas(i):
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "DELETE FROM Receitas WHERE id=? AND user_id=?"
         cur.execute(query, i)
 
 # Deletar Gastos
 def deletar_gastos(i):
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "DELETE FROM Gastos WHERE id=? AND user_id=?"
         cur.execute(query, i)
 
@@ -78,8 +76,8 @@ def deletar_gastos(i):
 # Ver Categorias de Receita
 def ver_categorias_receitas(user_id):
     lista_itens = []
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "SELECT * FROM Categoria_Receita WHERE user_id = ?"
         cur.execute(query, (user_id,))
         linha = cur.fetchall()
@@ -90,8 +88,8 @@ def ver_categorias_receitas(user_id):
 # Ver Categorias de Gasto
 def ver_categorias_gastos(user_id):
     lista_itens = []
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = "SELECT * FROM Categoria_Gasto WHERE user_id = ?"
         cur.execute(query, (user_id,))
         linha = cur.fetchall()
@@ -103,8 +101,8 @@ def ver_categorias_gastos(user_id):
 def ver_receitas(user_id):
     lista_itens = []
 
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = ("SELECT * FROM Receitas WHERE user_id = ?")
         cur.execute(query, (user_id,))
         linha = cur.fetchall()
@@ -117,8 +115,8 @@ def ver_receitas(user_id):
 def ver_gastos(user_id):
     lista_itens = []
 
-    with conexao:
-        cur = conexao.cursor()
+    with bd.conexao:
+        cur = bd.conexao.cursor()
         query = ("SELECT * FROM Gastos WHERE user_id = ?")
         cur.execute(query, (user_id,))
         linha = cur.fetchall()
@@ -144,8 +142,6 @@ def tabela(user_id):
         tabela_lista.append([i[0], 'Receita', i[1], i[2], i[3]])
 
     return tabela_lista
-
-
 
 
 # função para dados do grafico de barra

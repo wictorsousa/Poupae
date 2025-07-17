@@ -5,7 +5,19 @@ import sqlite3
 from tkinter import messagebox
 from view import cadastrar_novo_usuario, verificar_login
 from main import Dashboard
+import sys 
+import os
 
+# Função auxiliar para encontrar o caminho dos arquivos
+def resource_path(relative_path):
+    """ Retorna o caminho absoluto para o recurso, funciona para dev e para o PyInstaller """
+    try:
+        # O PyInstaller cria uma pasta temporária e armazena o caminho em _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
    
 class App(ctk.CTk):
@@ -14,7 +26,7 @@ class App(ctk.CTk):
         self.configuracoes_da_janela_inicial()
         self.tela_de_login()
         
-    #configurando a janela principa;
+    #configurando a janela principal;
     def  configuracoes_da_janela_inicial(self):
         self.geometry("700x400")
         self.title("Sistema de Login")
@@ -92,12 +104,12 @@ class App(ctk.CTk):
     def tela_de_login(self):
         
         #Trabalhando com imagens
-        self.img = ctk.CTkImage(light_image=Image.open("porco.png"), size=(360, 360)) # Defina o tamanho desejado aqui
+        self.img = ctk.CTkImage(light_image=Image.open(resource_path('porco.png')), size=(360, 360)) # Defina o tamanho desejado aqui
         self.lb_img = ctk.CTkLabel(self, text=None, image=self.img)
         self.lb_img.grid(row=1, column=0, padx=10)
         
         #Titulo da plataforma
-        self.title = ctk.CTkLabel(self, text="Faça seu login ou cadastre-se\n na nossa plataforma pra acessar \nos nossos serviços",  font=('Century Gothic ', 18, 'bold'))
+        self.title = ctk.CTkLabel(self, text="Faça seu login ou cadastre-se\n aqui pra acessar \nos nossos serviços",  font=('Century Gothic ', 18, 'bold'))
         self.title.grid(row=0, column=0, pady=10, padx=10)
         
         #Criar a frame do formulário de login
