@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import Image
 import sqlite3
 from tkinter import messagebox
-from view import cadastrar_novo_usuario, verificar_login
+from view import cadastrar_novo_usuario, verificar_login, verificar_email_existente 
 from main import Dashboard
 import sys 
 import os
@@ -55,6 +55,10 @@ class App(ctk.CTk):
 
             elif(self.senha_cadastro != self.confirma_senha_cadastro):
                 messagebox.showerror(title="Sistema de Login", message="ERRO!!!\nAs senhas colocadas não são iguais, coloque senhas iguais.")
+                
+            elif verificar_email_existente(self.email_cadastro):
+                messagebox.showerror(title="Sistema de Login", message="ERRO!!!\nEste e-mail já está em uso.")
+                
             else:
                 cadastrar_novo_usuario((self.username_cadastro, self.email_cadastro, self.senha_cadastro, self.confirma_senha_cadastro))
                     

@@ -3,29 +3,24 @@ import sqlite3 as lite
 import os
 import sys
 
-# --- Lógica para criar o caminho dinâmico do banco de dados ---
 
 # Determina o caminho base, funcionando tanto no script .py quanto no .exe
 if getattr(sys, 'frozen', False):
-    # Se estiver rodando como um executável (.exe)
+    # Se estiver rodando como um executável (.exe), o caminho é o da pasta do executável
     base_path = os.path.dirname(sys.executable)
 else:
-    # Se estiver rodando como um script normal (.py)
+    # Se estiver rodando como um script normal (.py), o caminho é o da pasta do script
     base_path = os.path.dirname(os.path.abspath(__file__))
 
-# Define o caminho para a pasta 'data'
-data_dir = os.path.join(base_path, 'data')
+# Define o caminho completo para o arquivo do banco de dados na mesma pasta do .exe
+# Isso garante que o app tenha permissão para escrever no banco de dados.
+db_path = os.path.join(base_path, 'dados.db')
 
-# Cria a pasta 'data' se ela não existir
-os.makedirs(data_dir, exist_ok=True)
-
-# Define o caminho completo para o arquivo do banco de dados
-db_path = os.path.join(data_dir, 'dados.db')
 
 # --- Fim da lógica do caminho ---
 
 
-# Conectando com o Banco de Dados usando o caminho dinâmico
+# Conectando com o Banco de Dados usando o caminho corrigido
 conexao = lite.connect(db_path)
 
 # Criando tabela de Usuarios

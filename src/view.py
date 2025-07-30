@@ -22,6 +22,13 @@ def verificar_login(i):
         cur.execute(query, i)
         return cur.fetchone()
 
+# Verifica e-mail já existente
+def verificar_email_existente(email):
+    with bd.conexao:
+        cur = bd.conexao.cursor()
+        query = "SELECT Email FROM Usuarios WHERE Email = ?"
+        cur.execute(query, (email,))
+        return cur.fetchone()
 
 # Funções de Inserção ----------------------------------------------
 

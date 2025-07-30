@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
 
-datas = [('C:\\Users\\victo\\OneDrive\\Área de Trabalho\\python\\venv\\Lib\\site-packages\\customtkinter', 'customtkinter'), ('logo.png', '.'), ('porco.png', '.'), ('rendaIcon.png', '.'), ('despesasIcon.png', '.'), ('walletIcon.png', '.')]
+datas = [('C:\\Users\\victo\\OneDrive\\Área de Trabalho\\projeto_final\\venv\\Lib\\site-packages\\customtkinter', 'customtkinter'), ('logo.png', '.'), ('porco.png', '.'), ('rendaIcon.png', '.'), ('despesasIcon.png', '.'), ('walletIcon.png', '.')]
 binaries = []
 hiddenimports = []
 tmp_ret = collect_all('matplotlib')
