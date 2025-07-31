@@ -3,8 +3,6 @@ import sqlite3 as lite
 import bd  # Mantém a importação do bd.py
 import pandas as pd
 
-# A linha "conexao = lite.connect('dados.db')" foi REMOVIDA daqui.
-
 # Cadastrar novo usuario no BD
 def cadastrar_novo_usuario(i):
     # Usa a conexão de bd.py -> bd.conexao
