@@ -12,3 +12,6 @@ Clique no link abaixo para acessar o protótipo do projeto no Figma:
 
 ## Acesso ao executável
  O executável está disponível em `src/dist/app.exe`
+
+## Acesso ao vídeo
+O link do vídeo está no final do documento e disponível aqui também https://drive.google.com/drive/folders/1Tu9NODEGnxMLYsy_gUYAo8H18vZ696xl?usp=sharing 
